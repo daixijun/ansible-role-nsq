@@ -6,7 +6,6 @@
     state: directory
     owner: nobody
     group: nobody
-    mode: "755"
 
 - name: Generate nsqd config
   template:
