@@ -1,0 +1,53 @@
+---
+- name: Downlaod nsq binaries
+  get_url:
+    url: "{{ nsq_download_url }}"
+    dest: "{{ playbook_dir }}/files/{{ nsq_download_url | basename }}"
+  delegate_to: localhost
+  become: false
+  run_once: true
+
+- name: Unarchive nsq to target server
+  unarchive:
+    src: "{{ playbook_dir }}/files/{{ nsq_download_url | basename }}"
+    dest: /usr/local/
+    creates: /usr/local/{{ nsq_download_url | basename | regex_replace(".tar.gz") }}
+    remote_src: false
+
+- name: Symlink to /usr/local/nsq
+  file:
+    src: /usr/local/{{ nsq_download_url | basename | regex_replace(".tar.gz") }}
+    dest: /usr/local/nsq
+    state: link
+    force: yes
+
+- name: Create config directory
+  file:
+    path: /usr/local/nsq/conf
+    state: directory
+    owner: root
+    group: root
+    mode: "755"
+
+- name: Set nsq to PATH environment
+  copy:
+    content: "export PATH=/usr/local/nsq/bin:$PATH"
+    dest: /etc/profile.d/nsq.sh
+    owner: root
+    group: root
+    mode: "644"
+
+- name: Include nsqlookupd tasks
+  include_tasks: nsqlookupd.yaml
+  when:
+    - "('nsqlookupd' in groups and inventory_hostname in groups['nsqlookupd']) or nsqlookupd_enable|bool"
+
+- name: Include nsqd tasks
+  include_tasks: nsqd.yaml
+  when:
+    - "('nsqd' in groups and inventory_hostname in groups['nsqd']) or nsqd_enable|bool"
+
+- name: Include nsqadmin tasks
+  include_tasks: nsqadmin.yaml
+  when:
+    - "('nsqadmin' in groups and inventory_hostname in groups['nsqadmin']) or nsqadmin_enable|bool"

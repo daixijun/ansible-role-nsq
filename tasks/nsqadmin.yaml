@@ -1,0 +1,19 @@
+---
+- name: Generate nsqadmin config
+  template:
+    src: nsqadmin.conf.j2
+    dest: /usr/local/nsq/conf/nsqadmin.conf
+    owner: root
+    group: root
+    mode: "644"
+  notify:
+    - restart nsqadmin
+
+- name: Startup for systemd
+  template:
+    src: nsqadmin.service.j2
+    dest: /etc/systemd/system/nsqadmin.service
+    owner: root
+    group: root
+  notify:
+    - restart nsqadmin

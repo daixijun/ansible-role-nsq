@@ -1,0 +1,3 @@
+---
+nsqadmin_nsqlookupd_http_addresses:
+  - "{{ hostvars['nsq-nsqlookupd']['ansible_default_ipv4']['address'] }}:4161"

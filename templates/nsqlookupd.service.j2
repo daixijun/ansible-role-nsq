@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+[Unit]
+Description=NSQ lookupd service
+After=network.target
+Wants=network.target
+
+[Service]
+ExecStart=/usr/local/nsq/bin/nsqlookupd -config /usr/local/nsq/conf/nsqlookupd.conf
+Restart=always
+RestartSec=20
+TimeoutSec=300
+User=nobody
+Group=nobody
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

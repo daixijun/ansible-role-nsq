@@ -1,0 +1,42 @@
+---
+language: python
+python:
+  - "3.7"
+  - "3.8"
+
+# Use the new container infrastructure
+sudo: false
+
+# Install ansible
+addons:
+  apt:
+    packages:
+      - python-pip
+
+env:
+  - MOLECULE_DISTRO=centos7
+  - MOLECULE_DISTRO=centos8
+
+install:
+  # Install ansible
+  - pip install ansible
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
+
+  - pip install "molecule[docker,lint]"
+  - molecule --version
+
+script:
+  # Basic role syntax check
+  - cd ..
+  - ln -sf ansible-role-nsq daixijun.nsq
+  - cd daixijun.nsq
+  - molecule test
+
+notifications:
+  email: false
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

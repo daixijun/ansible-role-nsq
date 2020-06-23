@@ -1,0 +1,28 @@
+---
+- name: Create data directory
+  file:
+    path: "{{ nsqd_data_path }}"
+    recurse: true
+    state: directory
+    owner: nobody
+    group: nobody
+    mode: "755"
+
+- name: Generate nsqd config
+  template:
+    src: nsqd.conf.j2
+    dest: /usr/local/nsq/conf/nsqd.conf
+    owner: root
+    group: root
+    mode: "644"
+  notify:
+    - restart nsqd
+
+- name: Startup for systemd
+  template:
+    src: nsqd.service.j2
+    dest: /etc/systemd/system/nsqd.service
+    owner: root
+    group: root
+  notify:
+    - restart nsqd

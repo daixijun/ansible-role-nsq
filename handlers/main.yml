@@ -1,0 +1,21 @@
+---
+- name: restart nsqd
+  systemd:
+    name: nsqd.service
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: restart nsqlookupd
+  systemd:
+    name: nsqlookupd.service
+    state: restarted
+    enabled: true
+    daemon_reload: true
+
+- name: restart nsqadmin
+  systemd:
+    name: nsqadmin.service
+    state: restarted
+    enabled: true
+    daemon_reload: true

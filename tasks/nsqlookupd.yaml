@@ -1,0 +1,19 @@
+---
+- name: Generate nsqlookupd config
+  template:
+    src: nsqlookupd.conf.j2
+    dest: /usr/local/nsq/conf/nsqlookupd.conf
+    owner: root
+    group: root
+    mode: "644"
+  notify:
+    - restart nsqlookupd
+
+- name: Startup for systemd
+  template:
+    src: nsqlookupd.service.j2
+    dest: /etc/systemd/system/nsqlookupd.service
+    owner: root
+    group: root
+  notify:
+    - restart nsqlookupd

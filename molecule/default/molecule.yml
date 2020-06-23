@@ -1,0 +1,45 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint -v
+platforms:
+  - name: nsq-nsqlookupd
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - nsqlookupd
+      - nsqadmin
+  - name: nsq-nsqd1
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - nsqd
+  - name: nsq-nsqd2
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest
+    command: ""
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - nsqd
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      verbosity: 1
+verifier:
+  name: ansible
