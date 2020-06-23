@@ -3,7 +3,6 @@ nsq_version: 1.2.0
 nsq_download_url: https://github.com/nsqio/nsq/releases/download/v{{ nsq_version }}/nsq-{{ nsq_version }}.linux-amd64.go1.12.9.tar.gz
 
 # nsqadmin
-nsqadmin_enable: false
 nsqadmin_log_level: info
 nsqadmin_http_address: 0.0.0.0:4171
 nsqadmin_nsqlookupd_http_addresses: []
@@ -12,13 +11,11 @@ nsqadmin_nsqd_http_addresses: []
 # - "127.0.0.1:4151"
 
 # nsqlookupd
-nsqlookupd_enable: false
 nsqlookupd_log_level: info
 nsqlookupd_tcp_address: "0.0.0.0:4160"
 nsqlookupd_http_address: "0.0.0.0:4161"
 
 # nsqd
-nsqd_enable: false
 nsqd_log_level: info
 nsqd_data_path: /data/nsq
 nsqd_tcp_address: 0.0.0.0:4150

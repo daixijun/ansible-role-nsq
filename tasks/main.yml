@@ -40,14 +40,14 @@
 - name: Include nsqlookupd tasks
   include_tasks: nsqlookupd.yaml
   when:
-    - "('nsqlookupd' in groups and inventory_hostname in groups['nsqlookupd']) or nsqlookupd_enable|bool"
+    - "'nsqlookupd' in groups and inventory_hostname in groups['nsqlookupd']"
 
 - name: Include nsqd tasks
   include_tasks: nsqd.yaml
   when:
-    - "('nsqd' in groups and inventory_hostname in groups['nsqd']) or nsqd_enable|bool"
+    - "'nsqd' in groups and inventory_hostname in groups['nsqd']"
 
 - name: Include nsqadmin tasks
   include_tasks: nsqadmin.yaml
   when:
-    - "('nsqadmin' in groups and inventory_hostname in groups['nsqadmin']) or nsqadmin_enable|bool"
+    - "'nsqadmin' in groups and inventory_hostname in groups['nsqadmin']"
